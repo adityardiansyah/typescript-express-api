@@ -48,7 +48,7 @@ itemsRouter.post("/", async (req: Request, res: Response) => {
     }
 })
 // PUT items/:id
-itemsRouter.put("/:id", async (req: Request, res:Response) => {
+itemsRouter.put("/:id", async (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id);
     try {
         const itemUpdate: Item = req.body;
@@ -56,9 +56,8 @@ itemsRouter.put("/:id", async (req: Request, res:Response) => {
         const existingItem: Item = await ItemService.find(id);
         if(existingItem){
             const updateItem = await ItemService.update(id, itemUpdate);
-            res.status(200).json(updateItem);
+            return res.status(200).json(updateItem);
         }
-        
         const newItem = await ItemService.create(itemUpdate);
         return res.status(200).json(newItem);
     } catch (error) {
@@ -68,10 +67,10 @@ itemsRouter.put("/:id", async (req: Request, res:Response) => {
 // DELETE items/:id
 itemsRouter.delete("/:id", async (req: Request, res: Response) => {
     try {
-        const id: number = parseInt(req.params.id, 10);
+        const id: number = parseInt(req.params.id);
 
         await ItemService.remove(id);
-        res.sendStatus(200);
+        res.status(200).send("Success");
     } catch (error) {
         res.status(500).send(error.message);
     }
